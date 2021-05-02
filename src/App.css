@@ -1,10 +1,50 @@
 .App {
+  background-color: rgba(96, 218, 206, 0.748);
   text-align: center;
+  padding-top: 50px;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+#text_head {
+  justify-content: center;
+  display: flex;
+}
+.op {
+  display: flex;
+  margin-top: 10px;
+}
+.opP {
+  flex: 1;
+ 
+  margin-right: 5px;
+  margin:0 10px;
+  margin-bottom: -5px;
+}
+.opM {
+  flex: 1;
+
+  margin-left: 5px;
+  margin:0 10px;
+  margin-bottom: -5px;
+}
+.text1 {
+  border: 2px #282c34 solid;
+  border-radius: 2mm;
+  padding: 10px;
+  margin: 20px;
+}
+ .text2 {
+  border: 2px #282c34 solid;
+  border-radius: 2mm;
+  padding: 10px;
+ margin: 0 35%;
+}
+ 
+.opP , .opM,.pointer:hover {
+  cursor: pointer;
 }
 
 @media (prefers-reduced-motion: no-preference) {
