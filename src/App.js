@@ -3,25 +3,26 @@ import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.css";
 import "./App.css";
+import TimeLength from "./components/timeLength";
+import Clock from "./components/clock";
 class App extends Component {
   constructor(props) {
     super(props);
-   
+
     this.state = {
       breakLength: 5,
       sessionLength: 25,
       isBreakTime: false,
       isPlay: false,
       seconds: 1500,
-      
     };
     this.timer = 0;
     this.countdown = this.countdown.bind(this);
   }
-  componentDidMount(){
-    var audio =document.getElementById("beep")
-    
-    this.setState({audio:audio})
+  componentDidMount() {
+    var audio = document.getElementById("beep");
+
+    this.setState({ audio: audio });
   }
 
   handleAddB() {
@@ -71,6 +72,8 @@ class App extends Component {
     }
   }
   handleRepeate() {
+    let audio = this.state.audio;
+    audio.currentTime = 0;
     if (this.state.isPlay) clearInterval(this.timer);
     this.state.audio.pause();
     this.setState({
@@ -79,16 +82,9 @@ class App extends Component {
       isBreakTime: false,
       isPlay: false,
       seconds: 1500,
+      audio,
     });
-    this.state.audio.currentTime=0;
   }
-  /* secondsToTime(sec) {
-    if (sec >= 0) {
-      var minute = Math.floor(sec / 60);
-      var seconds = Math.ceil(sec % 60);
-      this.setState({ time: { minute, seconds }, seconds: sec });
-    }
-  }*/
 
   handlePlay() {
     const isPlay = !this.state.isPlay;
@@ -132,81 +128,35 @@ class App extends Component {
     return (
       <div className="App ">
         <h1>25-5 Clock</h1>
-        <div id="text_head">
-          <div className="text1">
-            <h3 id="break-label">Break Length</h3>
-            <div className="op">
-              <h3
-                id="break-increment"
-                onClick={() => this.handleAddB()}
-                className=" opP"
-              >
-                +
-              </h3>
-              <h2 id="break-length">{breakLength}</h2>
-              <h3
-                id="break-decrement"
-                onClick={() => this.handleMinB()}
-                className=" opM"
-              >
-                -
-              </h3>
-            </div>
-          </div>
-          <div className="text1">
-            <h3 id="session-label">Session Length</h3>
-            <div className="op">
-              <h3
-                id="session-increment"
-                onClick={() => this.handleAddS()}
-                className="  opP"
-              >
-                +
-              </h3>
-              <h2 id="session-length">{sessionLength}</h2>
-              <h3
-                id="session-decrement"
-                onClick={() => this.handleMinS()}
-                className="  opM"
-              >
-                -
-              </h3>
-            </div>
-          </div>
-        </div>
-        <div></div>
-        <div className="text2">
-          <h3 id="timer-label">{isBreakTime ? "Break" : "Session"}</h3>
-          <h1 id="time-left">
-            {Math.floor(seconds / 60).toLocaleString("en-US", {
-              minimumIntegerDigits: 2,
-              useGrouping: false,
-            })}
-            :
-            {Math.ceil(seconds % 60).toLocaleString("en-US", {
-              minimumIntegerDigits: 2,
-              useGrouping: false,
-            })}
-          </h1>
+        <Clock
+          isBreakTime={isBreakTime}
+          seconds={seconds}
+          isPlay={isPlay}
+          handlePlay={() => this.handlePlay()}
+          handleRepeate={() => this.handleRepeate()}
+        />
 
-          <span>
-            <i
-              id="start_stop"
-              onClick={() => this.handlePlay()}
-              class={
-                isPlay ? "pointer fa fa-pause mr-3" : " pointer fa fa-play mr-3"
-              }
-              aria-hidden="true"
-            ></i>
-            <i
-              id="reset"
-              onClick={() => this.handleRepeate()}
-              class="fa fa-repeat pointer"
-              aria-hidden="true"
-            ></i>
-          </span>
+        <div id="text_head">
+          <TimeLength
+            handleAdd={() => this.handleAddB()}
+            handleMin={() => this.handleMinB()}
+            item="Break Length"
+            itemLength={breakLength}
+            id="break"
+          />
+          <TimeLength
+            handleAdd={() => this.handleAddS()}
+            handleMin={() => this.handleMinS()}
+            item="Session Length"
+            itemLength={sessionLength}
+            id="session"
+          />
         </div>
-        <audio id="beep" preload="true" src="https://assets.mixkit.co/sfx/download/mixkit-alarm-digital-clock-beep-989.wav"></audio>
+        <audio
+          id="beep"
+          preload="true"
+          src="https://assets.mixkit.co/sfx/download/mixkit-alarm-digital-clock-beep-989.wav"
+        ></audio>
       </div>
     );
   }
